@@ -43,6 +43,7 @@
           >
             {{countTodos}}
           </v-chip>
+          <v-btn class="error" v-on:click="emptyList"> Clear List </v-btn>
         </v-col>
       
       </v-row>
@@ -74,13 +75,14 @@ export default {
       const newTask = this.$refs.newtask.$refs.input.value
       // this.$store.dispatch('addNewTask', newTask)
       this.addNewTask(newTask)
-       this.cleanInput()
+      this.cleanInput()
             
     },
     removeTask(currentTask){
-      this.$store.dispatch('removeTask', currentTask)
-     
-      
+      this.$store.dispatch('removeTask', currentTask)           
+    },
+    emptyList(){
+      this.$store.dispatch('cleanList')
     }
   },
   computed:{
@@ -95,7 +97,8 @@ export default {
      },
      countTodos(){
        return this.$store.getters.countTodos
-     }
+     },
+    
   }
 }
 </script>

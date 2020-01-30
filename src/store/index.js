@@ -29,6 +29,9 @@ export default new Vuex.Store({
     } ,
     clearInput(state){
       state.inputvalue = " "
+    },
+    clearList(state){
+      state.tasks = []
     }
   },
   actions: {
@@ -40,6 +43,9 @@ export default new Vuex.Store({
     },
     cleanInput(context){
       context.commit('clearInput')
+    },
+    cleanList(context){
+      context.commit('clearList')
     }
   } 
 });
