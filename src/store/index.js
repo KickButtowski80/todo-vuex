@@ -26,9 +26,6 @@ export default new Vuex.Store({
       console.log("item  is " + currTask)      
       state.tasks.splice(currTask, 1)        
     } ,
-    clearInput(state){
-      state.valueInput = " "
-    },
     clearList(state){
       state.tasks = []
     }
