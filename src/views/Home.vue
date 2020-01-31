@@ -2,20 +2,21 @@
   <div class="home">
    <v-container fill-height>
       <v-row >
-
         <v-col md="6" class="primary">
           {{title1}}
-         
+        <v-form ref="form">
            <v-text-field
             name=""
             label="enter your todo " 
             ref="newtask"
-            v-bind:value= newtaskVal
-            solo
-          ></v-text-field>
-           
-          <v-btn v-on:click="add()"> Add </v-btn>         
- 
+            value=""
+            v-bind:rules="[rules.required, rules.min]"           
+            solo >
+            </v-text-field> 
+          <v-btn 
+        
+          v-on:click="add()"> Add </v-btn>         
+        </v-form>
         <ul >
           <li v-for="(task,index) in this.$store.state.tasks"
               v-bind:key="`${index}`"
@@ -44,8 +45,7 @@
             {{countTodos}}
           </v-chip>
           <v-btn class="error" v-on:click="emptyList"> Clear List </v-btn>
-        </v-col>
-      
+        </v-col>      
       </v-row>
     </v-container>
 
@@ -55,10 +55,15 @@
 <script>
  import {mapState, mapActions} from 'vuex'
 export default {
- 
-  name: "home",
-  components: {
-    // HelloWorld
+  data(){
+    return{
+      
+       rules:{
+        required: v => !!v || 'field cannot be empty',
+        min: v => v.length >=8 || 'Min must be 8 characters'
+     }
+    }
+
   },
   methods:{
  
@@ -67,15 +72,11 @@ export default {
       cleanInput: 'cleanInput'
     }),
     add(){
-     console.log(this.$refs.newtask.$refs.input.value)
-      // this.$store.state.tasks.push(
-      //   { name: this.$refs.newtask.$refs.input.value
-      //   })
-
-      const newTask = this.$refs.newtask.$refs.input.value
-      // this.$store.dispatch('addNewTask', newTask)
-      this.addNewTask(newTask)
-      this.cleanInput()
+      if(this.$refs.form.validate()){ 
+        const newTask = this.$refs.newtask.$refs.input.value       
+        this.addNewTask(newTask)        
+        this.$refs.newtask.reset()
+      }     
             
     },
     removeTask(currentTask){
@@ -83,10 +84,13 @@ export default {
     },
     emptyList(){
       this.$store.dispatch('cleanList')
+    },
+    clearInput(){
+        console.log("input is cleared")
     }
   },
   computed:{
-    
+     
       ...mapState({
          newtaskVal: state => state.inputvalue,
          title1: state => state.title1,
@@ -97,13 +101,15 @@ export default {
      },
      countTodos(){
        return this.$store.getters.countTodos
-     },
+     } 
     
   }
 }
 </script>
-<style scoped>
-
+<style>
+.v-messages__message{
+  font-size: 18px
+}
 </style>
 
 

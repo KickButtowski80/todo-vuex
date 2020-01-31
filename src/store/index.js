@@ -8,13 +8,12 @@ export default new Vuex.Store({
     title1: "Todo List",
     title2: "General Info",
     tasks:[],
-    inputvalue: ""
     
   },
   getters:{
     countTodos: state => {
       return state.tasks.length
-    }     
+    }  
   },
   mutations: {
     pushNewTask(state, task){       
@@ -28,7 +27,7 @@ export default new Vuex.Store({
       state.tasks.splice(currTask, 1)        
     } ,
     clearInput(state){
-      state.inputvalue = " "
+      state.valueInput = " "
     },
     clearList(state){
       state.tasks = []
